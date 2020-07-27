@@ -1,24 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 function App() {
+  const {
+    loginWithRedirect,
+    logout,
+    user,
+    isAuthenticated,
+    getAccessTokenSilently,
+    getIdTokenClaims,
+  } = useAuth0();
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    async function run() {
+      if (isAuthenticated) {
+        const accessToken = await getAccessTokenSilently({
+          audience: `https://upvest.eu.auth0.com/api/v2/`,
+          scope: "read:current_user",
+        });
+
+        const idToken = await getIdTokenClaims();
+
+        cookie.set("access_token", accessToken);
+        cookie.set("id_token", idToken.__raw);
+
+        const { data } = await axios.get(
+          "http://localhost:3001/api/opportunities/my",
+          {
+            withCredentials: true,
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        setData(data);
+      }
+    }
+
+    run();
+  }, [getAccessTokenSilently, getIdTokenClaims, isAuthenticated]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isAuthenticated ? (
+        <div>
+          <div>
+            <button type="button" onClick={logout}>
+              Log out
+            </button>
+          </div>
+          <div>
+            <h2>{user.name}</h2>
+            <p>{user.email}</p>
+          </div>
+          <div>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <button type="button" onClick={loginWithRedirect}>
+            Log in
+          </button>
+        </div>
+      )}
     </div>
   );
 }
