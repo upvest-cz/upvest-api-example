@@ -63,7 +63,6 @@ fragment MyInvestmentFields on Investment {
   account_id
   opportunity_id
   amount
-  status
   created_at
   updated_at
   currency
@@ -157,7 +156,7 @@ function App() {
     .toNumber();
 
   const investment_amount = myInvestments
-    .filter(({ currency, status }) => currency === CURRENCIES.CZK && status !== INVESTMENT_STATES.DISCARDED)
+    .filter(({ currency, state }) => currency === CURRENCIES.CZK && state !== INVESTMENT_STATES.DISCARDED)
     .reduce(
       (totalInvested, investment) => totalInvested.plus(investment.amount),
       new Decimal(0),

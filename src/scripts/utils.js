@@ -13,7 +13,8 @@ export const OPPORTUNITY_INTEREST_RATE_TYPE = {
 
 export const INVESTMENT_STATES = {
   RUNNING: 'running',
-  YIELDING: 'yielding',
+  CONFIRMED: 'confirmed',
+  // YIELDING: 'yielding', should be determined as 'confirmed' && yielding_period_start >= now
   PAID_OFF: 'paid_off',
   DISCARDED: 'discarded',
 };
