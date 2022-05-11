@@ -9,7 +9,7 @@ ReactDOM.render(
     clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
     audience={`https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`}
-    scope="read:current_user"
+    scope='openid profile email'
   >
     <App />
   </Auth0Provider>,
