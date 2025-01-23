@@ -8,8 +8,8 @@ ReactDOM.render(
     domain={process.env.REACT_APP_AUTH0_DOMAIN}
     clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
-    audience={`https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`}
-    scope='openid profile email'
+    audience="https://api.upvest.cz"
+    scope='openid profile email offline_access'
   >
     <App />
   </Auth0Provider>,
