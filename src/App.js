@@ -96,7 +96,7 @@ function App() {
     async function run() {
       if (isAuthenticated) {
         const accessToken = await getAccessTokenSilently({
-          audience: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
+          audience: `https://api.upvest.cz`,
           scope: 'openid profile email',
         });
 
